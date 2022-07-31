@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Instagram</string>
+    <string name="home_action_label">Home</string>
+    <string name="search_action_label">Search</string>
+    <string name="videos_action_label">Videos</string>
+    <string name="shop_action_label">Shop</string>
+    <string name="profile_action_label">Profile</string>
 </resources>
