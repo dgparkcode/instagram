@@ -1,7 +1,5 @@
 <resources>
     <string name="app_name">Instagram</string>
-    <string name="desc_logo">logo</string>
-    <string name="desc_arrow">arrow</string>
     <string name="action_following">팔로윙</string>
     <string name="action_favorite">즐겨찾기</string>
     <string name="action_posts">게시물</string>

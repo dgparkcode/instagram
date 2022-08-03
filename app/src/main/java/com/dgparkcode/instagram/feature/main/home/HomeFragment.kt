@@ -5,18 +5,44 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.view.GravityCompat
+import androidx.fragment.app.viewModels
 import com.dgparkcode.instagram.R
 import com.dgparkcode.instagram.base.BaseFragment
 import com.dgparkcode.instagram.databinding.FragmentHomeBinding
+import com.dgparkcode.instagram.extension.repeatOnStarted
+import com.dgparkcode.instagram.utils.SpaceItemDecoration
+import com.dgparkcode.instagram.viewmodel.FollowingUsersViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::inflate) {
 
+    private val followingUsersViewModel by viewModels<FollowingUsersViewModel>()
+    private val followingUsersAdapter by lazy { FollowingUsersAdapter { onFollowingUserClicked(it) } }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupToolbar()
         setupToolbarLogo()
+        setupFollowingUserList()
+    }
+
+    private fun setupFollowingUserList() {
+        binding.followingUserList.adapter = followingUsersAdapter
+
+        val resources = context?.resources
+        val spaceSize = resources?.getDimensionPixelSize(R.dimen.following_user_item_margin) ?: 0
+        binding.followingUserList.addItemDecoration(SpaceItemDecoration(spaceSize))
+
+        repeatOnStarted {
+            followingUsersViewModel.followingUsersUiState.collect { state ->
+                followingUsersAdapter.submitList(state.users)
+            }
+        }
+    }
+
+    private fun onFollowingUserClicked(position: Int) {
+        Toast.makeText(requireContext(), "$position", Toast.LENGTH_SHORT).show()
     }
 
     private fun setupToolbarLogo() {

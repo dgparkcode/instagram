@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="toolbar_logo_default_width">100dp</dimen>
+    <dimen name="following_user_item_width">56dp</dimen>
+    <dimen name="following_user_item_margin">8dp</dimen>
+</resources>
