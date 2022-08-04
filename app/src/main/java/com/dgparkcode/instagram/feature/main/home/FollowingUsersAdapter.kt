@@ -24,17 +24,6 @@ class FollowingUsersAdapter(
         holder.bind(getItem(position))
     }
 
-    inner class ViewHolder(
-        private val binding: ItemFollowingUserBinding
-    ) : RecyclerView.ViewHolder(binding.root) {
-
-        fun bind(item: FollowingUserUiState) {
-            binding.thumbImage.load(item.imageUrl) { transformations(CircleCropTransformation()) }
-            binding.nameText.text = item.name
-            binding.root.setOnClickListener { onItemClicked(adapterPosition) }
-        }
-    }
-
     companion object {
         private val diffCallback = object : DiffUtil.ItemCallback<FollowingUserUiState>() {
             override fun areItemsTheSame(
@@ -48,10 +37,22 @@ class FollowingUsersAdapter(
                 oldItem: FollowingUserUiState,
                 newItem: FollowingUserUiState
             ): Boolean {
-                return oldItem.id == newItem.id &&
-                        oldItem.name == newItem.name &&
-                        oldItem.imageUrl == newItem.imageUrl
+                return oldItem.userId == newItem.userId &&
+                        oldItem.userImageUrl == newItem.userImageUrl &&
+                        oldItem.userName == newItem.userName
             }
+        }
+    }
+
+    inner class ViewHolder(
+        private val binding: ItemFollowingUserBinding
+    ) : RecyclerView.ViewHolder(binding.root) {
+
+        fun bind(item: FollowingUserUiState) {
+            binding.thumbImage.load(item.userImageUrl) {
+                transformations(CircleCropTransformation())
+            }
+            binding.nameText.text = item.userName
         }
     }
 }

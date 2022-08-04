@@ -10,39 +10,29 @@ import com.dgparkcode.instagram.R
 import com.dgparkcode.instagram.base.BaseFragment
 import com.dgparkcode.instagram.databinding.FragmentHomeBinding
 import com.dgparkcode.instagram.extension.repeatOnStarted
-import com.dgparkcode.instagram.utils.SpaceItemDecoration
-import com.dgparkcode.instagram.viewmodel.FollowingUsersViewModel
+import com.dgparkcode.instagram.viewmodel.HomePostsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::inflate) {
 
-    private val followingUsersViewModel by viewModels<FollowingUsersViewModel>()
-    private val followingUsersAdapter by lazy { FollowingUsersAdapter { onFollowingUserClicked(it) } }
+    private val homePostsViewModel by viewModels<HomePostsViewModel>()
+    private val homePostsAdapter by lazy {
+        HomePostsAdapter(requireContext())
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupToolbar()
         setupToolbarLogo()
-        setupFollowingUserList()
-    }
 
-    private fun setupFollowingUserList() {
-        binding.followingUserList.adapter = followingUsersAdapter
-
-        val resources = context?.resources
-        val spaceSize = resources?.getDimensionPixelSize(R.dimen.following_user_item_margin) ?: 0
-        binding.followingUserList.addItemDecoration(SpaceItemDecoration(spaceSize))
+        binding.homePostsRv.adapter = homePostsAdapter
 
         repeatOnStarted {
-            followingUsersViewModel.followingUsersUiState.collect { state ->
-                followingUsersAdapter.submitList(state.users)
+            homePostsViewModel.homePosts.collect { state ->
+                homePostsAdapter.submitList(state.posts)
             }
         }
-    }
-
-    private fun onFollowingUserClicked(position: Int) {
-        Toast.makeText(requireContext(), "$position", Toast.LENGTH_SHORT).show()
     }
 
     private fun setupToolbarLogo() {
